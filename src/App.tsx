@@ -1,4 +1,8 @@
 import { Routes, Route } from 'react-router-dom'
+import DashboardLayout from './layout/dashboard/DashboardLayout'
+import DashboardAll from './pages/DashboardAll'
+import DashboardEdit from './pages/DashboardEdit'
+import DashboardNew from './pages/DashboardNew'
 
 function App() {
   return (
@@ -9,9 +13,11 @@ function App() {
         {/* <Route path='login' element={<About />} /> */}
         {/* <Route path='register' element={<Contact />} /> */}
 
-        {/* <Route path='dashboard/all' element={<Contact />} /> */}
-        {/* <Route path='dashboard/edit' element={<Contact />} /> */}
-        {/* <Route path='dashboard/new' element={<Contact />} /> */}
+        <Route element={<DashboardLayout />}>
+          <Route path='dashboard/all' element={<DashboardAll />} />
+          <Route path='dashboard/edit' element={<DashboardEdit />} />
+          <Route path='dashboard/new' element={<DashboardNew />} />
+        </Route>
       </Routes>
     </div>
   )

@@ -10,13 +10,13 @@ function App() {
       <Routes>
         <Route path='/' element={<div className='bg-grey-1'>ok</div>} />
 
-        {/* <Route path='login' element={<About />} /> */}
-        {/* <Route path='register' element={<Contact />} /> */}
+        <Route path='login' element={<div></div>} />
+        <Route path='register' element={<div></div>} />
 
         <Route element={<DashboardLayout />}>
-          <Route path='dashboard/all' element={<DashboardAll />} />
-          <Route path='dashboard/edit' element={<DashboardEdit />} />
-          <Route path='dashboard/new' element={<DashboardNew />} />
+          <Route path='articles' element={<DashboardAll />} />
+          <Route path='articles/edit' element={<DashboardEdit />} />
+          <Route path='articles/create' element={<DashboardNew />} />
         </Route>
       </Routes>
     </div>

@@ -3,31 +3,35 @@ import type { PayloadAction } from '@reduxjs/toolkit'
 import type { RootState } from './store'
 
 interface UserState {
-  value: number
+  username?: string
+  image?: string
 }
 
 const initialState: UserState = {
-  value: 0,
+  username: undefined,
+  image: undefined,
 }
 
 export const userSlice = createSlice({
   name: 'user',
   initialState,
   reducers: {
-    increment: state => {
-      state.value += 1
+    setUser: (
+      state,
+      action: PayloadAction<{ username: string; image?: string }>
+    ) => {
+      state.username = action.payload.username
+      state.image = action.payload.image
     },
-    decrement: state => {
-      state.value -= 1
-    },
-    incrementByAmount: (state, action: PayloadAction<number>) => {
-      state.value += action.payload
+    removeUser: state => {
+      state.image = undefined
+      state.username = undefined
     },
   },
 })
 
-export const { increment, decrement, incrementByAmount } = userSlice.actions
+export const { setUser, removeUser } = userSlice.actions
 
-export const selectCount = (state: RootState) => state.user.value
+export const selectUsername = (state: RootState) => state.user.username
 
 export default userSlice.reducer

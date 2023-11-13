@@ -1,4 +1,4 @@
-type Author = {
+type AuthorType = {
   username: string
   image: string
   following: boolean
@@ -9,7 +9,7 @@ export type ArticleType = {
   title: string
   slug: string
   favorited: boolean
-  author: Author
+  author: AuthorType
   favoritesCount: number
   createdAt: string
   updatedAt: string

@@ -1,37 +1,65 @@
 type Props = {
   label: string
-  onChange: (args: unknown) => unknown
+  onChange: ((args: unknown) => unknown) | ((e: React.ChangeEvent<any>) => void)
   value: any
-  id: string
-  type: string
+  id?: string
+  type?: string
   error?: string
   autcomplete?: string
+  placeholder?: string
+  textarea?: boolean
+  resize?: 'none' | 'vertical' | 'horizontal' | 'both'
+  containerClassName?: string
+}
+
+const resizeClassName = {
+  none: 'resize-none',
+  vertical: 'resize-y',
+  horizontal: 'resize-x',
+  both: 'resize',
 }
 
 const FormInput: React.FC<Props> = ({
   label,
   id,
   onChange,
-  type,
+  type = 'text',
   value,
   error,
   autcomplete,
+  placeholder,
+  textarea = false,
+  resize = 'none',
+  containerClassName,
 }) => {
   return (
-    <div className='flex flex-col mb-7'>
+    <div className={`${containerClassName} flex flex-col mb-7`}>
       <label className={`mb-[10px] pl-1 ${error && 'text-red-1'}`}>
         {label}
       </label>
-      <input
-        id={id}
-        type={type}
-        className={`outline-none h-10 px-3 border rounded border-grey-2 ${
-          error && 'border-red-1'
-        }`}
-        onChange={onChange}
-        value={value}
-        autoComplete={autcomplete}
-      />
+      {textarea ? (
+        <textarea
+          id={id}
+          className={`outline-none h-10 px-3 border rounded border-grey-2 ${
+            error && 'border-red-1'
+          } ${resizeClassName[resize]}`}
+          onChange={onChange}
+          value={value}
+          placeholder={placeholder}
+        />
+      ) : (
+        <input
+          id={id}
+          type={type}
+          className={`outline-none h-10 px-3 border rounded border-grey-2 ${
+            error && 'border-red-1'
+          }`}
+          onChange={onChange}
+          value={value}
+          autoComplete={autcomplete}
+          placeholder={placeholder}
+        />
+      )}
       {error ? <div className='text-red-1'>{error}</div> : null}
     </div>
   )

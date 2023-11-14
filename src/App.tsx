@@ -1,12 +1,14 @@
+import { lazy, Suspense, useEffect } from 'react'
 import { Routes, Route, useNavigate } from 'react-router-dom'
 import DashboardLayout from './layout/dashboard/DashboardLayout'
-import DashboardAll from './pages/DashboardAll'
-import DashboardEdit from './pages/DashboardEdit'
-import DashboardNew from './pages/DashboardNew'
 import AuthLayout from './layout/auth/AuthLayout'
-import Login from './pages/Login'
-import Register from './pages/Register'
-import { useEffect } from 'react'
+
+const DashboardAll = lazy(() => import('./pages/DashboardAll'))
+const DashboardEdit = lazy(() => import('./pages/DashboardEdit'))
+const DashboardNew = lazy(() => import('./pages/DashboardNew'))
+const Login = lazy(() => import('./pages/Login'))
+const Register = lazy(() => import('./pages/Register'))
+
 import { useAppDispatch } from './store/hooks'
 import { Authenticate } from './services/user/user.thunks'
 import MyToast from './components/MyToast'
@@ -23,17 +25,52 @@ function App() {
     <div id='App'>
       <MyToast />
       <Routes>
-        <Route path='/' element={<div className='bg-grey-1'>ok</div>} />
+        <Route path='/' element={<div>ok</div>} />
 
         <Route element={<AuthLayout />}>
-          <Route path='login' element={<Login />} />
-          <Route path='register' element={<Register />} />
+          <Route
+            path='login'
+            element={
+              <Suspense>
+                <Login />
+              </Suspense>
+            }
+          />
+          <Route
+            path='register'
+            element={
+              <Suspense>
+                <Register />
+              </Suspense>
+            }
+          />
         </Route>
 
         <Route element={<DashboardLayout />}>
-          <Route path='articles' element={<DashboardAll />} />
-          <Route path='articles/edit' element={<DashboardEdit />} />
-          <Route path='articles/create' element={<DashboardNew />} />
+          <Route
+            path='articles'
+            element={
+              <Suspense>
+                <DashboardAll />
+              </Suspense>
+            }
+          />
+          <Route
+            path='articles/edit/:slug'
+            element={
+              <Suspense>
+                <DashboardEdit />
+              </Suspense>
+            }
+          />
+          <Route
+            path='articles/create'
+            element={
+              <Suspense>
+                <DashboardNew />
+              </Suspense>
+            }
+          />
         </Route>
       </Routes>
     </div>

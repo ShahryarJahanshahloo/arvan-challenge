@@ -2,6 +2,7 @@ import { Popover } from '@headlessui/react'
 import { formatTableDate } from '../helpers/time'
 import { FaCaretDown as CaretIcon } from 'react-icons/fa'
 import ArticleTableRowTags from './ArticleTableRowTags'
+import { useNavigate } from 'react-router-dom'
 
 type Props = {
   row: number
@@ -10,6 +11,8 @@ type Props = {
   tags: string[]
   excerpt: string
   created: string
+  slug: string
+  onDelete: (slug: string) => void
 }
 
 const ArticlesTableRow: React.FC<Props> = ({
@@ -19,10 +22,14 @@ const ArticlesTableRow: React.FC<Props> = ({
   row,
   tags,
   title,
+  slug,
+  onDelete,
 }) => {
-  const handleEdit = () => {}
+  const navigate = useNavigate()
 
-  const handleDelete = () => {}
+  const handleEdit = () => {
+    navigate('/articles/edit/' + slug)
+  }
 
   return (
     <div className='flex pt-5 border-b text-grey-6 border-grey-2'>
@@ -46,10 +53,18 @@ const ArticlesTableRow: React.FC<Props> = ({
           <div
             className={`flex flex-col rounded text-grey-6 border border-grey-2 bg-white`}
           >
-            <button className='py-2 pl-4 border-b w-44 border-grey-2 text-start'>
+            <button
+              className='py-2 pl-4 border-b w-44 border-grey-2 text-start'
+              onClick={handleEdit}
+            >
               Edit
             </button>
-            <button className='py-[10px] pl-4 w-44 text-start'>Delete</button>
+            <button
+              onClick={() => onDelete(slug)}
+              className='py-[10px] pl-4 w-44 text-start'
+            >
+              Delete
+            </button>
           </div>
         </Popover.Panel>
       </Popover>

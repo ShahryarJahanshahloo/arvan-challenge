@@ -9,7 +9,7 @@ const DashboardNew = () => {
   return (
     <>
       <DashboardTitle title={strings.title} />
-      <ArticleForm />
+      <ArticleForm isEdit={false} />
     </>
   )
 }

@@ -14,7 +14,7 @@ export const getUserArticles = async (
   const res = await request.get('/articles', {
     params: { author, limit, offset },
   })
-  return res.data.articles as ArticleType[]
+  return res.data as { articles: ArticleType[]; articlesCount: number }
 }
 
 export const apiGetArticle = async (slug: string) => {

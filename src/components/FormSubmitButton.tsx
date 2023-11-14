@@ -2,15 +2,14 @@ type Props = {
   label: string
   disabled?: boolean
   loading?: boolean
+  inputClassName?: string
 }
-
-//TODO: full width option
-//TODO: height option
 
 const FormSubmitButton: React.FC<Props> = ({
   label,
   disabled = false,
   loading = false,
+  inputClassName,
 }) => {
   return loading ? (
     <div
@@ -24,7 +23,7 @@ const FormSubmitButton: React.FC<Props> = ({
     <input
       type='submit'
       value={label}
-      className={`h-10 text-white rounded cursor-pointer bg-blue-1 ${
+      className={`${inputClassName} h-10 text-white rounded cursor-pointer bg-blue-1 ${
         disabled && 'bg-opacity-70'
       }`}
       disabled={disabled}

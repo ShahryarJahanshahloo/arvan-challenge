@@ -10,6 +10,7 @@ type Props = {
   textarea?: boolean
   resize?: 'none' | 'vertical' | 'horizontal' | 'both'
   containerClassName?: string
+  inputClassName?: string
 }
 
 const resizeClassName = {
@@ -31,6 +32,7 @@ const FormInput: React.FC<Props> = ({
   textarea = false,
   resize = 'none',
   containerClassName,
+  inputClassName,
 }) => {
   return (
     <div className={`${containerClassName} flex flex-col mb-7`}>
@@ -40,7 +42,7 @@ const FormInput: React.FC<Props> = ({
       {textarea ? (
         <textarea
           id={id}
-          className={`outline-none h-10 px-3 border rounded border-grey-2 ${
+          className={`${inputClassName} outline-none h-10 px-3 border rounded border-grey-2 ${
             error && 'border-red-1'
           } ${resizeClassName[resize]}`}
           onChange={onChange}
@@ -51,7 +53,7 @@ const FormInput: React.FC<Props> = ({
         <input
           id={id}
           type={type}
-          className={`outline-none h-10 px-3 border rounded border-grey-2 ${
+          className={`${inputClassName} outline-none h-10 px-3 border rounded border-grey-2 ${
             error && 'border-red-1'
           }`}
           onChange={onChange}

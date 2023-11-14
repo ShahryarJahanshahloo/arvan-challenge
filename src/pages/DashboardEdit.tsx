@@ -23,7 +23,9 @@ const DashboardEdit = () => {
   return (
     <>
       <DashboardTitle title={strings.title} />
-      {initialValues && <ArticleForm initialValuesToUpdate={initialValues} />}
+      {initialValues && (
+        <ArticleForm initialValuesToUpdate={initialValues} isEdit={true} />
+      )}
     </>
   )
 }

@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import {
   apiDeleteArticle,
   getUserArticles,
@@ -10,23 +10,44 @@ import ArticlesTablePagination from './ArticlesTablePagination'
 import { useSelector } from 'react-redux'
 import { selectUsername } from '../store/userSlice'
 import DeleteArticleModal from './DeleteArticleModal'
-import { useNavigate } from 'react-router-dom'
 import TableSkeleton from './TableSkeleton'
+import { Toast } from '../services/toast/toast.thunks'
+import { ArticleDeletionToast } from './SuccessToast'
 
 const ArticlesTable = () => {
   const dispatch = useAppDispatch()
   const articles = useAppSelector(selectArticles)
-  const navigate = useNavigate()
   const username = useSelector(selectUsername)
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [articleToDelete, setArticleToDelete] = useState<string>()
+  const [page, setPage] = useState(1)
+  const [totalPages, setTotalPages] = useState(5)
+
+  const offset = useMemo(() => {
+    return (page - 1) * 10
+  }, [page])
+
+  const nextPage = () => {
+    if (page === totalPages) return
+    setPage(page + 1)
+  }
+
+  const prevPage = () => {
+    if (page === 1) return
+    setPage(page - 1)
+  }
+
+  const selectPage = (newPage: number) => {
+    setPage(newPage)
+  }
 
   useEffect(() => {
     if (!username) return
-    getUserArticles(username, 10, 1).then(articles => {
-      dispatch(setArticles(articles))
+    getUserArticles(username, 10, offset).then(res => {
+      setTotalPages(Math.ceil(res.articlesCount / 10))
+      dispatch(setArticles(res.articles))
     })
-  }, [username])
+  }, [username, offset])
 
   const handleArticleOnDelete = useCallback((slug: string) => {
     setArticleToDelete(slug)
@@ -81,7 +102,12 @@ const ArticlesTable = () => {
           onSuccess={() => {
             if (articleToDelete === undefined) return
             apiDeleteArticle(articleToDelete).then(() => {
-              navigate(0)
+              if (username)
+                getUserArticles(username, 10, offset).then(res => {
+                  setTotalPages(Math.ceil(res.articlesCount / 10))
+                  dispatch(setArticles(res.articles))
+                })
+              dispatch(Toast(ArticleDeletionToast, 'top-20 right-[30px]'))
             })
             setIsModalOpen(false)
           }}
@@ -89,7 +115,13 @@ const ArticlesTable = () => {
       </div>
 
       <div className='flex items-center justify-center w-full pt-14'>
-        <ArticlesTablePagination total={5} />
+        <ArticlesTablePagination
+          total={totalPages}
+          active={page}
+          next={nextPage}
+          prev={prevPage}
+          selectPage={selectPage}
+        />
       </div>
     </div>
   )

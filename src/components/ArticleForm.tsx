@@ -8,8 +8,12 @@ import { useEffect, useState } from 'react'
 import { apiGetTags } from '../services/article/article.api'
 import FormCheckbox from './FormCheckbox'
 import { nanoid } from 'nanoid'
-import { CreateArticle } from '../services/article/article.thunks'
+import {
+  CreateArticle,
+  UpdateArticle,
+} from '../services/article/article.thunks'
 import TagSkeleton from './TagSkeleton'
+import { ArticleCreationToast, ArticleUpdateToast } from './SuccessToast'
 
 const strings = {
   tags: 'Tags',
@@ -21,15 +25,17 @@ const strings = {
 }
 
 type Props = {
+  isEdit: boolean
   initialValuesToUpdate?: {
     title: string
     description: string
     body: string
+    slug: string
     tagList?: string[]
   }
 }
 
-const ArticleForm: React.FC<Props> = ({ initialValuesToUpdate }) => {
+const ArticleForm: React.FC<Props> = ({ initialValuesToUpdate, isEdit }) => {
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
   const formik = useFormik({
@@ -42,11 +48,31 @@ const ArticleForm: React.FC<Props> = ({ initialValuesToUpdate }) => {
       tags?.forEach(item => {
         if (item.checked === true) checkedTags.push(item.label)
       })
-      dispatch(
-        CreateArticle({ ...values, tagList: checkedTags }, navigate, () => {
-          setSubmitting(false)
-        })
-      )
+      if (isEdit) {
+        if (initialValuesToUpdate === undefined) return
+        dispatch(
+          UpdateArticle(
+            initialValuesToUpdate.slug,
+            { ...values, tagList: checkedTags },
+            navigate,
+            ArticleUpdateToast,
+            () => {
+              setSubmitting(false)
+            }
+          )
+        )
+      } else {
+        dispatch(
+          CreateArticle(
+            { ...values, tagList: checkedTags },
+            navigate,
+            ArticleCreationToast,
+            () => {
+              setSubmitting(false)
+            }
+          )
+        )
+      }
     },
   })
   const [newTag, setNewTag] = useState('')
@@ -73,7 +99,27 @@ const ArticleForm: React.FC<Props> = ({ initialValuesToUpdate }) => {
       description: initialValuesToUpdate.description,
       title: initialValuesToUpdate.title,
     })
-    //TODO: update taglist
+    setTags(prevState => {
+      if (prevState === undefined) return
+      const newTags = [...prevState]
+      initialValuesToUpdate.tagList?.forEach(item => {
+        const found = tags?.find(elem => elem.label === item)
+        if (found === undefined) {
+          newTags.push({
+            checked: true,
+            label: item,
+            uid: nanoid(),
+          })
+        }
+      })
+      return newTags.map(item => {
+        if (initialValuesToUpdate.tagList?.includes(item.label)) {
+          return { ...item, checked: true }
+        } else {
+          return item
+        }
+      })
+    })
   }, [])
 
   const handleNewTagChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -97,7 +143,7 @@ const ArticleForm: React.FC<Props> = ({ initialValuesToUpdate }) => {
   //TODO: separate hook
   const handleKeyDown = (event: KeyboardEvent) => {
     if (event.key === 'Enter') {
-      console.log('clicked', newTag)
+      event.preventDefault()
       if (newTag.trim() !== '') {
         setTags(prevState => {
           if (prevState === undefined) return
@@ -140,9 +186,6 @@ const ArticleForm: React.FC<Props> = ({ initialValuesToUpdate }) => {
           placeholder={strings.inputDescription}
           containerClassName='gap-2 mb-6'
         />
-        {/* 
-          <textarea className='py-1 h-52 ' />
-         */}
         <FormInput
           id='body'
           label={strings.inputBody}
@@ -152,11 +195,12 @@ const ArticleForm: React.FC<Props> = ({ initialValuesToUpdate }) => {
           textarea
           resize='none'
           containerClassName='gap-2 mb-6'
+          inputClassName='h-52 py-1'
         />
-        {/* className='h-[35px] w-[100px]' */}
         <FormSubmitButton
           label={strings.submit}
           disabled={formik.isSubmitting || !formik.isValid}
+          inputClassName='h-[35px] w-[100px]'
         />
       </div>
       <div className='flex flex-col w-[252px] gap-2'>

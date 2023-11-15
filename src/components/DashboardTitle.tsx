@@ -5,7 +5,7 @@ type Props = {
 const DashboardTitle: React.FC<Props> = ({ title }) => {
   return (
     <div>
-      <span className='text-[40px]'>{title}</span>
+      <span className='md:text-[40px] md:pl-0 pl-4 text-3xl'>{title}</span>
     </div>
   )
 }

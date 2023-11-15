@@ -56,53 +56,58 @@ const ArticleForm = () => {
   }, [])
 
   return (
-    <form className='flex pt-5 gap-11' onSubmit={handleSubmit}>
-      <div className='flex flex-col flex-grow'>
-        <FormInput
-          id='title'
-          type='text'
-          label={strings.inputTitle}
-          value={values.title}
-          touched={touched.title}
-          onBlur={handleBlur}
-          onChange={handleChange}
-          error={errors.title}
-          placeholder={strings.inputTitle}
-          containerClassName='gap-2 mb-6'
-        />
-        <FormInput
-          id='description'
-          type='text'
-          label={strings.inputDescription}
-          value={values.description}
-          touched={touched.description}
-          onBlur={handleBlur}
-          onChange={handleChange}
-          error={errors.description}
-          placeholder={strings.inputDescription}
-          containerClassName='gap-2 mb-6'
-        />
-        <FormInput
-          id='body'
-          label={strings.inputBody}
-          value={values.body}
-          touched={touched.body}
-          onBlur={handleBlur}
-          onChange={handleChange}
-          error={errors.body}
-          textarea
-          resize='none'
-          containerClassName='gap-2 mb-6'
-          inputClassName='h-52 py-1'
-        />
-        <FormSubmitButton
-          label={strings.submit}
-          disabled={isSubmitting || !isValid}
-          loading={isSubmitting}
-          inputClassName='h-[35px] w-[100px]'
-        />
+    <form
+      className='flex flex-col gap-4 px-4 py-5 md:py-0 md:gap-0 md:px-0'
+      onSubmit={handleSubmit}
+    >
+      <div className='flex flex-col gap-2 md:flex-row md:gap-11'>
+        <div className='flex flex-col flex-grow'>
+          <FormInput
+            id='title'
+            type='text'
+            label={strings.inputTitle}
+            value={values.title}
+            touched={touched.title}
+            onBlur={handleBlur}
+            onChange={handleChange}
+            error={errors.title}
+            placeholder={strings.inputTitle}
+            containerClassName='gap-2 mb-6'
+          />
+          <FormInput
+            id='description'
+            type='text'
+            label={strings.inputDescription}
+            value={values.description}
+            touched={touched.description}
+            onBlur={handleBlur}
+            onChange={handleChange}
+            error={errors.description}
+            placeholder={strings.inputDescription}
+            containerClassName='gap-2 mb-6'
+          />
+          <FormInput
+            id='body'
+            label={strings.inputBody}
+            value={values.body}
+            touched={touched.body}
+            onBlur={handleBlur}
+            onChange={handleChange}
+            error={errors.body}
+            textarea
+            resize='none'
+            containerClassName='gap-2 mb-6'
+            inputClassName='h-52 py-1'
+          />
+        </div>
+        <ArticleFormTags />
       </div>
-      <ArticleFormTags />
+      <FormSubmitButton
+        label={strings.submit}
+        disabled={isSubmitting || !isValid}
+        loading={isSubmitting}
+        inputClassName='h-[35px] w-[100px]'
+      />
     </form>
   )
 }

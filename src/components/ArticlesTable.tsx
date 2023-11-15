@@ -60,9 +60,9 @@ const ArticlesTable = () => {
         <span className=''>#</span>
         <div className='flex items-center justify-between flex-grow pr-4'>
           <span className='flex-grow max-w-[380px] pl-1'>Title</span>
-          <span className='w-[70px]'>Author</span>
-          <span className='w-[180px]'>Tags</span>
-          <span className='w-56 pl-2'>Excerpt</span>
+          <span className='hidden md:block w-[70px]'>Author</span>
+          <span className='hidden md:block w-[180px]'>Tags</span>
+          <span className='hidden w-56 pl-2 md:block'>Excerpt</span>
         </div>
         <span className='pl-28 text-end'>Created</span>
       </div>

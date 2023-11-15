@@ -42,6 +42,8 @@ const LoginForm = () => {
         value={formik.values.email}
         onChange={formik.handleChange}
         error={formik.errors.email}
+        onBlur={formik.handleBlur}
+        touched={formik.touched.email}
       />
       <FormInput
         id='password'
@@ -50,6 +52,8 @@ const LoginForm = () => {
         value={formik.values.password}
         onChange={formik.handleChange}
         error={formik.errors.password}
+        onBlur={formik.handleBlur}
+        touched={formik.touched.password}
       />
       <FormSubmitButton
         label={strings.submit}

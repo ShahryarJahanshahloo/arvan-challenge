@@ -11,6 +11,8 @@ type Props = {
   resize?: 'none' | 'vertical' | 'horizontal' | 'both'
   containerClassName?: string
   inputClassName?: string
+  touched?: boolean
+  onBlur?: any
 }
 
 const resizeClassName = {
@@ -33,36 +35,42 @@ const FormInput: React.FC<Props> = ({
   resize = 'none',
   containerClassName,
   inputClassName,
+  touched,
+  onBlur,
 }) => {
+  //TODO: should show error useMemo
+
   return (
     <div className={`${containerClassName} flex flex-col mb-7`}>
-      <label className={`mb-[10px] pl-1 ${error && 'text-red-1'}`}>
+      <label className={`mb-[10px] pl-1 ${error && touched && 'text-red-1'}`}>
         {label}
       </label>
       {textarea ? (
         <textarea
           id={id}
           className={`${inputClassName} outline-none h-10 px-3 border rounded border-grey-2 ${
-            error && 'border-red-1'
+            error && touched && 'border-red-1'
           } ${resizeClassName[resize]}`}
           onChange={onChange}
           value={value}
           placeholder={placeholder}
+          onBlur={onBlur}
         />
       ) : (
         <input
           id={id}
           type={type}
           className={`${inputClassName} outline-none h-10 px-3 border rounded border-grey-2 ${
-            error && 'border-red-1'
+            error && touched && 'border-red-1'
           }`}
           onChange={onChange}
           value={value}
           autoComplete={autcomplete}
           placeholder={placeholder}
+          onBlur={onBlur}
         />
       )}
-      {error ? <div className='text-red-1'>{error}</div> : null}
+      {error && touched ? <div className='text-red-1'>{error}</div> : null}
     </div>
   )
 }

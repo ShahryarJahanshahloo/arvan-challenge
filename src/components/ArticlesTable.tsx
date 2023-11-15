@@ -65,7 +65,7 @@ const ArticlesTable = () => {
         <span className='text-end'>Created</span>
       </div>
 
-      <div>
+      <div className='min-h-[600px]'>
         {articles ? (
           articles.map((item, index) => {
             return (

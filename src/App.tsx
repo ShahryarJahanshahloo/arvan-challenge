@@ -1,5 +1,5 @@
 import { lazy, Suspense, useEffect } from 'react'
-import { Routes, Route, useNavigate } from 'react-router-dom'
+import { Routes, Route, useNavigate, Navigate } from 'react-router-dom'
 import DashboardLayout from './layout/dashboard/DashboardLayout'
 import AuthLayout from './layout/auth/AuthLayout'
 
@@ -25,7 +25,7 @@ function App() {
     <div id='App'>
       <MyToast />
       <Routes>
-        <Route path='/' element={<div>ok</div>} />
+        <Route path='/' element={<Navigate to='/login' replace />} />
 
         <Route element={<AuthLayout />}>
           <Route
@@ -72,6 +72,7 @@ function App() {
             }
           />
         </Route>
+        <Route path='*' element={<Navigate to='/login' replace />} />
       </Routes>
     </div>
   )

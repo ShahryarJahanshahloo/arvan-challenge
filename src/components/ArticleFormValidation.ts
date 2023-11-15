@@ -2,12 +2,14 @@ export interface FormValues {
   title: string
   description: string
   body: string
+  tags?: { label: string; checked: boolean; uid: string }[]
 }
 
 export const initialValues: FormValues = {
   title: '',
   description: '',
   body: '',
+  tags: undefined,
 }
 
 export const validate = (values: FormValues) => {

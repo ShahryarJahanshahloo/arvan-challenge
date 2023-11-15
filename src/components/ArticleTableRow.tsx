@@ -32,17 +32,19 @@ const ArticlesTableRow: React.FC<Props> = ({
   }
 
   return (
-    <div className='flex pt-5 border-b text-grey-6 border-grey-2'>
-      <div className='flex items-center flex-grow pl-4 justify-evenly'>
+    <div className='flex items-center h-16 border-b text-grey-6 border-grey-2'>
+      <div className='flex items-center flex-grow pl-4'>
         <span className='w-7'>{row}</span>
-        <span className='flex-grow max-w-md'>{title}</span>
-        <span className='max-w-[120px]'>{author}</span>
-        <ArticleTableRowTags tags={tags} />
-        <span className=''>{excerpt.substring(0, 20) + '...'}</span>
+        <div className='flex items-center justify-between flex-grow pr-4'>
+          <span className='flex-grow max-w-md pl-1 pr-4'>{title}</span>
+          <span className='max-w-[120px]'>{author}</span>
+          <ArticleTableRowTags tags={tags} />
+          <span className='w-56 pl-2'>{excerpt.substring(0, 20) + '...'}</span>
+        </div>
         <span className='pr-4 text-end'>{formatTableDate(created)}</span>
       </div>
 
-      <Popover className='relative'>
+      <Popover className='relative pt-3'>
         <Popover.Button className='flex w-16 h-10 text-white rounded outline-none bg-blue-2'>
           <div className='px-[10px] pt-2'>…</div>
           <div className='w-[30px] flex items-center justify-center'>

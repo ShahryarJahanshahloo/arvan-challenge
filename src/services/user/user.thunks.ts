@@ -42,7 +42,7 @@ export const Login =
       )
       navigate('/articles')
     } catch (error) {
-      dispatch(Toast(toastComp))
+      dispatch(Toast(toastComp, 'top-[30px] right-[30px]'))
       console.log(error)
     }
     if (cb) cb()

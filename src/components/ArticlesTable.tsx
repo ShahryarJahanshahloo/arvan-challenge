@@ -21,7 +21,7 @@ const ArticlesTable = () => {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [articleToDelete, setArticleToDelete] = useState<string>()
   const [page, setPage] = useState(1)
-  const [totalPages, setTotalPages] = useState(5)
+  const [totalPages, setTotalPages] = useState(1)
 
   const offset = useMemo(() => {
     return (page - 1) * 10
@@ -56,16 +56,18 @@ const ArticlesTable = () => {
 
   return (
     <div className='py-[30px]'>
-      <div className='flex items-center justify-between w-full h-10 gap-4 px-4 font-bold bg-grey-1 text-grey-5'>
+      <div className='flex items-center w-full h-10 gap-4 px-4 font-bold bg-grey-1 text-grey-5'>
         <span className=''>#</span>
-        <span className='flex-grow max-w-md'>Title</span>
-        <span className='w-[120px]'>Author</span>
-        <span className='w-[180px]'>Tags</span>
-        <span className=''>Excerpt</span>
-        <span className='text-end'>Created</span>
+        <div className='flex items-center justify-between flex-grow pr-4'>
+          <span className='flex-grow max-w-md pl-1'>Title</span>
+          <span className='w-[120px]'>Author</span>
+          <span className='w-[180px]'>Tags</span>
+          <span className='w-56 pl-2'>Excerpt</span>
+        </div>
+        <span className='pl-12 text-end'>Created</span>
       </div>
 
-      <div className='min-h-[600px]'>
+      <div className='min-h-[640px]'>
         {articles ? (
           articles.map((item, index) => {
             return (
@@ -83,7 +85,7 @@ const ArticlesTable = () => {
             )
           })
         ) : (
-          <div className='flex flex-col gap-8 pt-6'>
+          <div className='flex flex-col gap-10 pt-6 h-[640px]'>
             {Array.from({ length: 10 }, (v, i) => i + 1).map(index => {
               return <TableSkeleton key={index} />
             })}

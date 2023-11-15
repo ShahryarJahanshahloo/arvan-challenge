@@ -12,11 +12,7 @@ const MyToast = () => {
 
   if (isVisible === false) return null
 
-  return (
-    <div className={`${ContainerClassName} fixed top-[30px] right-[30px]`}>
-      {content}
-    </div>
-  )
+  return <div className={`${ContainerClassName} fixed`}>{content}</div>
 }
 
 export default MyToast

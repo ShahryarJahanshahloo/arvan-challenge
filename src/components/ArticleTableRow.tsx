@@ -36,8 +36,10 @@ const ArticlesTableRow: React.FC<Props> = ({
       <div className='flex items-center flex-grow pl-4'>
         <span className='w-7'>{row}</span>
         <div className='flex items-center justify-between flex-grow pr-4'>
-          <span className='flex-grow max-w-md pl-1 pr-4'>{title}</span>
-          <span className='max-w-[120px]'>{author}</span>
+          <span className='flex-grow max-w-[380px] pl-1 pr-4 overflow-hidden'>
+            {title}
+          </span>
+          <span className='max-w-[120px] overflow-hidden'>{author}</span>
           <ArticleTableRowTags tags={tags} />
           <span className='w-56 pl-2'>{excerpt.substring(0, 20) + '...'}</span>
         </div>

@@ -59,12 +59,12 @@ const ArticlesTable = () => {
       <div className='flex items-center w-full h-10 gap-4 px-4 font-bold bg-grey-1 text-grey-5'>
         <span className=''>#</span>
         <div className='flex items-center justify-between flex-grow pr-4'>
-          <span className='flex-grow max-w-md pl-1'>Title</span>
-          <span className='w-[120px]'>Author</span>
+          <span className='flex-grow max-w-[380px] pl-1'>Title</span>
+          <span className='w-[70px]'>Author</span>
           <span className='w-[180px]'>Tags</span>
           <span className='w-56 pl-2'>Excerpt</span>
         </div>
-        <span className='pl-12 text-end'>Created</span>
+        <span className='pl-28 text-end'>Created</span>
       </div>
 
       <div className='min-h-[640px]'>

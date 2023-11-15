@@ -27,7 +27,7 @@ const ArticlesTablePagination: React.FC<Props> = ({
             <div
               onClick={() => selectPage(index)}
               className={`flex items-center cursor-pointer justify-center w-10 h-10 border-r border-grey-2 ${
-                index === active ? 'bg-grey-2' : 'bg-white'
+                index === active ? 'font-bold' : 'font-normal'
               }`}
               key={index}
             >

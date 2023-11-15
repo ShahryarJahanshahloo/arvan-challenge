@@ -9,11 +9,9 @@ const request = axios.create({
 
 request.interceptors.response.use(
   response => {
-    console.log(`response for ${response.config.url}`, response)
     return response
   },
   error => {
-    console.log(error.response)
     return Promise.reject(error as AxiosError)
   }
 )
@@ -26,7 +24,6 @@ request.interceptors.request.use(
         config.headers.Authorization = 'Bearer ' + String(token)
       }
     }
-    console.log(`${config.url}`)
     return config
   },
   error => Promise.reject(error)

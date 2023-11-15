@@ -15,15 +15,19 @@ export default {
         blue: {
           1: '#1C7CD5',
           2: '#56C0E0',
+          3: '#DCEDF6',
         },
         red: {
           1: '#D9534F',
+          2: '#EFDFDF',
         },
         green: {
           1: '#5CB85C',
+          2: '#E2EED8',
         },
         yellow: {
           1: '#F0AD4E',
+          2: '#FCF7E4',
         },
       },
     },

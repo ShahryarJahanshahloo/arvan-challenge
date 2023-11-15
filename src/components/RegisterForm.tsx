@@ -42,6 +42,8 @@ const RegisterForm = () => {
         value={formik.values.username}
         onChange={formik.handleChange}
         error={formik.errors.username}
+        onBlur={formik.handleBlur}
+        touched={formik.touched.username}
       />
       <FormInput
         id='email'
@@ -50,6 +52,8 @@ const RegisterForm = () => {
         value={formik.values.email}
         onChange={formik.handleChange}
         error={formik.errors.email}
+        onBlur={formik.handleBlur}
+        touched={formik.touched.email}
       />
       <FormInput
         id='password'
@@ -59,6 +63,8 @@ const RegisterForm = () => {
         onChange={formik.handleChange}
         error={formik.errors.password}
         autcomplete='new-password'
+        onBlur={formik.handleBlur}
+        touched={formik.touched.password}
       />
       <FormSubmitButton
         label={strings.submit}

@@ -12,9 +12,7 @@ export const validate = (values: FormValues) => {
   const errors: Partial<FormValues> = {}
   const regex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/i
 
-  if (!values.email) {
-    errors.email = 'Required field'
-  } else if (!regex.test(values.email)) {
+  if (!regex.test(values.email)) {
     errors.email = 'Invalid email'
   }
 

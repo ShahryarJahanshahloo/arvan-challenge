@@ -56,67 +56,62 @@ const ArticlesTable = () => {
 
   return (
     <div className='py-[30px]'>
-      <div className='flex items-center w-full h-10 gap-4 px-4 font-bold bg-grey-1 text-grey-5'>
-        <span className=''>#</span>
-        <div className='flex items-center justify-between flex-grow pr-4'>
-          <span className='flex-grow max-w-[380px] pl-1'>Title</span>
-          <span className='hidden md:block w-[70px]'>Author</span>
-          <span className='hidden md:block w-[180px]'>Tags</span>
-          <span className='hidden w-56 pl-2 md:block'>Excerpt</span>
-        </div>
-        <span className='pl-28 text-end'>Created</span>
+      <div className='w-full min-h-[680px]'>
+        <table className='w-full'>
+          <tr className='w-full h-10 font-bold bg-grey-1 text-grey-5'>
+            <th className='hidden pl-4 text-start md:table-cell'>#</th>
+            <th className='pl-2 text-start md:pl-0'>Title</th>
+            <th className='hidden text-start md:table-cell'>Author</th>
+            <th className='hidden text-start md:table-cell'>Tags</th>
+            <th className='hidden text-start md:table-cell'>Excerpt</th>
+            <th className='pr-7 text-end'>Created</th>
+          </tr>
+          {articles
+            ? articles.map((item, index) => {
+                return (
+                  <ArticlesTableRow
+                    key={item.title}
+                    author={item.author.username}
+                    created={item.createdAt}
+                    excerpt={item.body}
+                    row={index + 1}
+                    tags={item.tagList}
+                    title={item.title}
+                    slug={item.slug}
+                    onDelete={handleArticleOnDelete}
+                  />
+                )
+              })
+            : Array.from({ length: 10 }, (v, i) => i + 1).map(index => {
+                return <TableSkeleton key={index} />
+              })}
+        </table>
       </div>
 
-      <div className='min-h-[640px]'>
-        {articles ? (
-          articles.map((item, index) => {
-            return (
-              <ArticlesTableRow
-                key={item.title}
-                author={item.author.username}
-                created={item.createdAt}
-                excerpt={item.body}
-                row={index + 1}
-                tags={item.tagList}
-                title={item.title}
-                slug={item.slug}
-                onDelete={handleArticleOnDelete}
-              />
-            )
+      <DeleteArticleModal
+        isOpen={isModalOpen}
+        close={() => {
+          setIsModalOpen(false)
+        }}
+        onReject={() => {
+          setArticleToDelete(undefined)
+          setIsModalOpen(false)
+        }}
+        onSuccess={() => {
+          if (articleToDelete === undefined) return
+          apiDeleteArticle(articleToDelete).then(() => {
+            if (username)
+              getUserArticles(username, 10, offset).then(res => {
+                setTotalPages(Math.ceil(res.articlesCount / 10))
+                dispatch(setArticles(res.articles))
+              })
+            dispatch(Toast(ArticleDeletionToast, 'top-20 right-[30px]'))
           })
-        ) : (
-          <div className='flex flex-col gap-10 pt-6 h-[640px]'>
-            {Array.from({ length: 10 }, (v, i) => i + 1).map(index => {
-              return <TableSkeleton key={index} />
-            })}
-          </div>
-        )}
+          setIsModalOpen(false)
+        }}
+      />
 
-        <DeleteArticleModal
-          isOpen={isModalOpen}
-          close={() => {
-            setIsModalOpen(false)
-          }}
-          onReject={() => {
-            setArticleToDelete(undefined)
-            setIsModalOpen(false)
-          }}
-          onSuccess={() => {
-            if (articleToDelete === undefined) return
-            apiDeleteArticle(articleToDelete).then(() => {
-              if (username)
-                getUserArticles(username, 10, offset).then(res => {
-                  setTotalPages(Math.ceil(res.articlesCount / 10))
-                  dispatch(setArticles(res.articles))
-                })
-              dispatch(Toast(ArticleDeletionToast, 'top-20 right-[30px]'))
-            })
-            setIsModalOpen(false)
-          }}
-        />
-      </div>
-
-      <div className='flex items-center justify-center w-full pt-14'>
+      <div className='flex items-center justify-center w-full mt-14'>
         <ArticlesTablePagination
           total={totalPages}
           active={page}

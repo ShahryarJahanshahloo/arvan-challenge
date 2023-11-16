@@ -2,15 +2,35 @@ const TableSkeleton = () => {
   return (
     <>
       {/* desktop skeleton */}
-      <div className='hidden gap-6 md:flex'>
-        <div className='w-10 h-6 bg-neutral-300 animate-pulse'></div>
-        <div className='w-32 h-6 bg-neutral-300 animate-pulse'></div>
-        <div className='flex-grow h-6 bg-neutral-300 animate-pulse'></div>
-        <div className='flex-grow h-6 bg-neutral-300 animate-pulse'></div>
-        <div className='w-20 h-6 bg-neutral-300 animate-pulse'></div>
-      </div>
+      <tr className='hidden w-full h-16 md:table-row'>
+        <td className='px-4'>
+          <div className='w-16 h-6 rounded-full bg-neutral-300 animate-pulse'></div>
+        </td>
+        <td className='px-4'>
+          <div className='h-6 rounded-full w-72 bg-neutral-300 animate-pulse'></div>
+        </td>
+        <td className='px-4 '>
+          <div className='w-32 h-6 rounded-full bg-neutral-300 animate-pulse'></div>
+        </td>
+        <td className='px-4'>
+          <div className='w-32 h-6 rounded-full bg-neutral-300 animate-pulse'></div>
+        </td>
+        <td className='px-4'>
+          <div className='w-32 h-6 rounded-full bg-neutral-300 animate-pulse'></div>
+        </td>
+        <td className='px-4'>
+          <div className='w-32 h-6 rounded-full bg-neutral-300 animate-pulse'></div>
+        </td>
+      </tr>
       {/* mobile skeleton */}
-      <div className='block h-6 mx-6 md:hidden bg-neutral-300 animate-pulse'></div>
+      <tr className='table-row w-full h-16 md:hidden'>
+        <td className='px-4'>
+          <div className='w-48 h-6 rounded-full bg-neutral-300 animate-pulse'></div>
+        </td>
+        <td className='px-4'>
+          <div className='float-right w-32 h-6 rounded-full bg-neutral-300 animate-pulse'></div>
+        </td>
+      </tr>
     </>
   )
 }

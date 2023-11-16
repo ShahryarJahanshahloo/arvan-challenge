@@ -19,7 +19,7 @@ const DashboardLayout = () => {
       <Header isSidebarOpen={isMenuOpen} toggleSidebar={toggleSidebar} />
       <div className='flex h-full overflow-y-hidden'>
         <Sidebar isOpen={isMenuOpen} closeSidebar={closSidebar} />
-        <div className='flex-grow md:pt-5 md:px-[30px] pt-2 overflow-y-auto'>
+        <div className='flex-grow md:pt-6 md:px-[30px] pt-2 overflow-y-auto'>
           <Outlet />
         </div>
       </div>

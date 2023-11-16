@@ -57,10 +57,10 @@ const ArticleForm = () => {
 
   return (
     <form
-      className='flex flex-col gap-4 px-4 py-5 md:py-0 md:gap-0 md:px-0'
+      className='flex flex-col gap-4 px-4 py-5 mt-6 md:py-0 md:gap-0 md:px-0'
       onSubmit={handleSubmit}
     >
-      <div className='flex flex-col gap-2 md:flex-row md:gap-11'>
+      <div className='flex flex-col gap-2 mb-4 md:flex-row md:gap-11'>
         <div className='flex flex-col flex-grow'>
           <FormInput
             id='title'
@@ -72,7 +72,9 @@ const ArticleForm = () => {
             onChange={handleChange}
             error={errors.title}
             placeholder={strings.inputTitle}
-            containerClassName='gap-2 mb-6'
+            containerClassName='mb-6'
+            errorClassName='mt-1'
+            labelClassName='text-grey-6'
           />
           <FormInput
             id='description'
@@ -84,7 +86,9 @@ const ArticleForm = () => {
             onChange={handleChange}
             error={errors.description}
             placeholder={strings.inputDescription}
-            containerClassName='gap-2 mb-6'
+            containerClassName='mb-6'
+            errorClassName='mt-1'
+            labelClassName='text-grey-6'
           />
           <FormInput
             id='body'
@@ -96,8 +100,10 @@ const ArticleForm = () => {
             error={errors.body}
             textarea
             resize='none'
-            containerClassName='gap-2 mb-6'
-            inputClassName='h-52 py-1'
+            errorClassName='mt-1'
+            inputClassName='min-h-[208px] py-1 flex-grow'
+            labelClassName='text-grey-6'
+            containerClassName='flex-grow'
           />
         </div>
         <ArticleFormTags />
@@ -106,7 +112,7 @@ const ArticleForm = () => {
         label={strings.submit}
         disabled={isSubmitting || !isValid}
         loading={isSubmitting}
-        inputClassName='h-[35px] w-[100px]'
+        inputClassName='w-[100px] py-[6px]'
       />
     </form>
   )

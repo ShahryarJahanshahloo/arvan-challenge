@@ -44,6 +44,8 @@ const LoginForm = () => {
         error={formik.errors.email}
         onBlur={formik.handleBlur}
         touched={formik.touched.email}
+        errorClassName='mt-2'
+        containerClassName='mb-7'
       />
       <FormInput
         id='password'
@@ -54,10 +56,13 @@ const LoginForm = () => {
         error={formik.errors.password}
         onBlur={formik.handleBlur}
         touched={formik.touched.password}
+        errorClassName='mt-2'
+        containerClassName='mb-7'
       />
       <FormSubmitButton
         label={strings.submit}
         disabled={formik.isSubmitting || !formik.isValid}
+        inputClassName='py-2'
       />
     </form>
   )

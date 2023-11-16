@@ -36,7 +36,7 @@ const Header: React.FC<Props> = ({ isSidebarOpen, toggleSidebar }) => {
       <div className='flex justify-end flex-grow'>
         <button
           onClick={handleLogout}
-          className='border rounded border-blue-2 text-blue-2 px-3 md:px-[18px] my-[10px] md:h-10 h-8'
+          className='border rounded border-blue-2 text-blue-2 px-3 md:px-[19px] my-[10px] md:h-10 h-8'
         >
           {strings.logout}
         </button>

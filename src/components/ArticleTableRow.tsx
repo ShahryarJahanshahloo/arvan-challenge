@@ -64,7 +64,7 @@ const ArticlesTableRow: React.FC<Props> = ({
             className={`flex flex-col rounded text-grey-6 border border-grey-2 bg-white`}
           >
             <button
-              className='py-2 pl-4 border-b w-44 border-grey-2 text-start'
+              className='py-[10px] pl-4 border-b w-44 border-grey-2 text-start'
               onClick={handleEdit}
             >
               Edit

@@ -61,15 +61,15 @@ const ArticleFormTags = () => {
   }, [newTag])
 
   return (
-    <div className='flex flex-col w-[252px] gap-2'>
+    <div className='flex flex-col w-[252px]'>
       <FormInput
         label={strings.tags}
         value={newTag}
         onChange={handleNewTagChange}
         placeholder={strings.tagPlaceholder}
-        containerClassName='gap-2 mb-6'
+        containerClassName='mb-6'
       />
-      <div className='border rounded border-grey-2 px-4 pt-[17px] py-4 flex flex-col gap-3'>
+      <div className='flex flex-col gap-3 px-4 py-4 border rounded border-grey-2'>
         {sortedTags ? (
           sortedTags.map(tag => {
             if (tag === undefined) return

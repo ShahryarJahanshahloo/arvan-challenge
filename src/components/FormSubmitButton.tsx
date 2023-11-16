@@ -13,7 +13,7 @@ const FormSubmitButton: React.FC<Props> = ({
 }) => {
   return loading ? (
     <div
-      className={`${inputClassName} h-10 text-white rounded cursor-pointer flex justify-center items-center bg-blue-1 ${
+      className={`${inputClassName} text-white rounded cursor-pointer flex justify-center items-center bg-blue-1 ${
         disabled && 'bg-opacity-70'
       }`}
     >
@@ -23,7 +23,7 @@ const FormSubmitButton: React.FC<Props> = ({
     <input
       type='submit'
       value={label}
-      className={`${inputClassName} h-10 text-white rounded cursor-pointer bg-blue-1 ${
+      className={`${inputClassName} text-white rounded cursor-pointer bg-blue-1 ${
         disabled && 'bg-opacity-70'
       }`}
       disabled={disabled}

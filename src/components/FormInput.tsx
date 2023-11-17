@@ -13,6 +13,8 @@ type Props = {
   inputClassName?: string
   touched?: boolean
   onBlur?: any
+  errorClassName?: string
+  labelClassName?: string
 }
 
 const resizeClassName = {
@@ -37,12 +39,17 @@ const FormInput: React.FC<Props> = ({
   inputClassName,
   touched,
   onBlur,
+  errorClassName,
+  labelClassName,
 }) => {
   //TODO: should show error useMemo
 
   return (
-    <div className={`${containerClassName} flex flex-col mb-7`}>
-      <label className={`mb-[10px] pl-1 ${error && touched && 'text-red-1'}`}>
+    <div className={`${containerClassName} flex flex-col`}>
+      <label
+        className={`${labelClassName} mb-2 ${error && touched && 'text-red-1'}`}
+        htmlFor={id}
+      >
         {label}
       </label>
       {textarea ? (
@@ -70,7 +77,9 @@ const FormInput: React.FC<Props> = ({
           onBlur={onBlur}
         />
       )}
-      {error && touched ? <div className='text-red-1'>{error}</div> : null}
+      {error && touched ? (
+        <div className={`${errorClassName} text-red-1`}>{error}</div>
+      ) : null}
     </div>
   )
 }

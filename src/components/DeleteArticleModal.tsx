@@ -23,7 +23,10 @@ const DeleteArticleModal: React.FC<Props> = ({
       <Dialog.Panel className='flex flex-col justify-center overflow-y-auto bg-white border rounded border-grey-3 w-[500px] text-grey-6'>
         <div className='h-[62px] flex items-center px-4 border-b border-grey-2 justify-between'>
           <span className='text-xl font-bold'>Delete Article</span>
-          <CrossIcon className='text-[#818a91] cursor-pointer' />
+          <CrossIcon
+            className='text-[#818a91] cursor-pointer'
+            onClick={() => close()}
+          />
         </div>
         <p className='pt-4 pl-5 border-b border-grey-2 h-[88px]'>
           Are you sure to delete Article?

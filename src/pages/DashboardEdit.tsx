@@ -5,7 +5,7 @@ import { apiGetArticle } from '../services/article/article.api'
 import { useParams } from 'react-router-dom'
 import { Formik } from 'formik'
 import { validate } from '../components/ArticleFormValidation'
-import { UpdateArticle } from '../services/article/article.thunks'
+import { UpdateArticle } from '../store/article/article.thunks'
 import { ArticleUpdateToast } from '../components/SuccessToast'
 import { useAppDispatch } from '../store/hooks'
 import { useNavigate } from 'react-router-dom'
@@ -24,21 +24,23 @@ const DashboardEdit = () => {
 
   useEffect(() => {
     if (slug === undefined) return
-    apiGetArticle(slug).then(article => {
-      const formData: FormValues = {
-        body: article.body,
-        description: article.description,
-        title: article.title,
-      }
-      formData.tags = article.tagList.map(tag => {
-        return {
-          checked: true,
-          label: tag,
-          uid: nanoid(),
+    apiGetArticle(slug)
+      .then(article => {
+        const formData: FormValues = {
+          body: article.body,
+          description: article.description,
+          title: article.title,
         }
+        formData.tags = article.tagList.map(tag => {
+          return {
+            checked: true,
+            label: tag,
+            uid: nanoid(),
+          }
+        })
+        setInitialValues(formData)
       })
-      setInitialValues(formData)
-    })
+      .catch(() => {})
   }, [slug])
 
   return (
@@ -61,12 +63,9 @@ const DashboardEdit = () => {
                 slug,
                 { ...values, tagList: checkedTags },
                 navigate,
-                ArticleUpdateToast,
-                () => {
-                  setSubmitting(false)
-                }
+                ArticleUpdateToast
               )
-            )
+            ).finally(() => setSubmitting(false))
           }}
         >
           <ArticleForm />

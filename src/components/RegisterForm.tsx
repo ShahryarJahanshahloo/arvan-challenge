@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom'
 import FormSubmitButton from '../components/FormSubmitButton'
 import FormInput from '../components/FormInput'
 import { initialValues, validate } from './RegisterFormValidation'
-import { Register } from '../services/user/user.thunks'
+import { Register } from '../store/user/user.thunks'
 
 const strings = {
   submit: 'Register',
@@ -21,12 +21,7 @@ const RegisterForm = () => {
     validate: validate,
     onSubmit: (values, { setSubmitting }) => {
       setSubmitting(true)
-      //TODO: add schema validation
-      dispatch(
-        Register(values, navigate, () => {
-          setSubmitting(false)
-        })
-      )
+      dispatch(Register(values, navigate)).finally(() => setSubmitting(false))
     },
   })
 
@@ -44,6 +39,7 @@ const RegisterForm = () => {
         error={formik.errors.username}
         onBlur={formik.handleBlur}
         touched={formik.touched.username}
+        containerClassName='mb-7'
       />
       <FormInput
         id='email'
@@ -54,6 +50,7 @@ const RegisterForm = () => {
         error={formik.errors.email}
         onBlur={formik.handleBlur}
         touched={formik.touched.email}
+        containerClassName='mb-7'
       />
       <FormInput
         id='password'
@@ -65,10 +62,12 @@ const RegisterForm = () => {
         autcomplete='new-password'
         onBlur={formik.handleBlur}
         touched={formik.touched.password}
+        containerClassName='mb-7'
       />
       <FormSubmitButton
         label={strings.submit}
         disabled={formik.isSubmitting || !formik.isValid}
+        inputClassName='py-2'
       />
     </form>
   )

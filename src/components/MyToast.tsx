@@ -3,7 +3,7 @@ import {
   selectContainerClassName,
   selectContent,
   selectVisible,
-} from '../store/toastSlice'
+} from '../store/toast/toastSlice'
 
 const MyToast = () => {
   const isVisible = useAppSelector(selectVisible)

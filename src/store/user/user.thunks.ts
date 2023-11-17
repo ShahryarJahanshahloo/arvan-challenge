@@ -1,7 +1,11 @@
 import { NavigateFunction } from 'react-router-dom'
-import { AppThunk } from '../../store/store'
-import { removeUser, setUser } from '../../store/userSlice'
-import { apiGetUser, apiLogin, apiRegisterUser } from './user.api'
+import { AppThunk } from '../store'
+import { removeUser, setUser } from './userSlice'
+import {
+  apiGetUser,
+  apiLogin,
+  apiRegisterUser,
+} from '../../services/user/user.api'
 import { Toast } from '../toast/toast.thunks'
 
 export const Authenticate =
@@ -27,9 +31,8 @@ export const Login =
   (
     creds: { email: string; password: string },
     navigate: NavigateFunction,
-    toastComp: React.ReactElement,
-    cb?: () => void
-  ): AppThunk =>
+    toastComp: React.ReactElement
+  ): AppThunk<Promise<void>> =>
   async dispatch => {
     try {
       const user = await apiLogin(creds)
@@ -45,15 +48,13 @@ export const Login =
       dispatch(Toast(toastComp, 'top-[30px] right-[30px]'))
       console.log(error)
     }
-    if (cb) cb()
   }
 
 export const Register =
   (
     body: { email: string; password: string; username: string },
-    navigate: NavigateFunction,
-    cb?: () => void
-  ): AppThunk =>
+    navigate: NavigateFunction
+  ): AppThunk<Promise<void>> =>
   async dispatch => {
     try {
       const user = await apiRegisterUser(body)
@@ -68,7 +69,6 @@ export const Register =
     } catch (error) {
       console.log(error)
     }
-    if (cb) cb()
   }
 
 export const Logout =

@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom'
 import FormSubmitButton from '../components/FormSubmitButton'
 import FormInput from '../components/FormInput'
 import { initialValues, validate } from './LoginFormValidation'
-import { Login } from '../services/user/user.thunks'
+import { Login } from '../store/user/user.thunks'
 import { LoginErrorToast } from './ErrorToast'
 
 const strings = {
@@ -21,11 +21,8 @@ const LoginForm = () => {
     validate: validate,
     onSubmit: (values, { setSubmitting }) => {
       setSubmitting(true)
-      //TODO: add schema validation
-      dispatch(
-        Login(values, navigate, LoginErrorToast, () => {
-          setSubmitting(false)
-        })
+      dispatch(Login(values, navigate, LoginErrorToast)).finally(() =>
+        setSubmitting(false)
       )
     },
   })
@@ -44,6 +41,8 @@ const LoginForm = () => {
         error={formik.errors.email}
         onBlur={formik.handleBlur}
         touched={formik.touched.email}
+        errorClassName='mt-2'
+        containerClassName='mb-7'
       />
       <FormInput
         id='password'
@@ -54,10 +53,13 @@ const LoginForm = () => {
         error={formik.errors.password}
         onBlur={formik.handleBlur}
         touched={formik.touched.password}
+        errorClassName='mt-2'
+        containerClassName='mb-7'
       />
       <FormSubmitButton
         label={strings.submit}
         disabled={formik.isSubmitting || !formik.isValid}
+        inputClassName='py-2'
       />
     </form>
   )

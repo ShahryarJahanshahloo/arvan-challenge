@@ -10,7 +10,7 @@ const Login = lazy(() => import('./pages/Login'))
 const Register = lazy(() => import('./pages/Register'))
 
 import { useAppDispatch } from './store/hooks'
-import { Authenticate } from './services/user/user.thunks'
+import { Authenticate } from './store/user/user.thunks'
 import MyToast from './components/MyToast'
 
 function App() {
@@ -49,6 +49,14 @@ function App() {
         <Route element={<DashboardLayout />}>
           <Route
             path='articles'
+            element={
+              <Suspense>
+                <DashboardAll />
+              </Suspense>
+            }
+          />
+          <Route
+            path='articles/page/:slug'
             element={
               <Suspense>
                 <DashboardAll />

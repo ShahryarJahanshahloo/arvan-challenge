@@ -5,6 +5,10 @@ import TagSkeleton from './TagSkeleton'
 import { nanoid } from 'nanoid'
 import { useFormikContext } from 'formik'
 import { FormValues } from './ArticleFormValidation'
+import useKeyDown from '../hooks/useKeyDown'
+import { useAppDispatch } from '../store/hooks'
+import { MergeTags } from '../store/article/article.thunks'
+import { sortTags } from '../helpers/tags'
 
 const strings = {
   tags: 'Tags',
@@ -12,15 +16,28 @@ const strings = {
 }
 
 const ArticleFormTags = () => {
+  const dispatch = useAppDispatch()
   const [newTag, setNewTag] = useState('')
   const { values, setFieldValue } = useFormikContext<FormValues>()
+  useKeyDown('Enter', () => {
+    if (newTag.trim() === '') return
+    if (values.tags === undefined) return
+    const newTags = [...values.tags]
+    newTags.push({ checked: true, label: newTag, uid: nanoid() })
+    setFieldValue('tags', newTags)
+    setNewTag('')
+  })
+
+  useEffect(() => {
+    dispatch(MergeTags(values.tags))
+      .then(newTags => {
+        setFieldValue('tags', newTags)
+      })
+      .catch(() => {})
+  }, [])
 
   const sortedTags = useMemo(() => {
-    return values.tags?.sort((a, b) => {
-      const textA = a.label.toUpperCase()
-      const textB = b.label.toUpperCase()
-      return textA < textB ? -1 : textA > textB ? 1 : 0
-    })
+    return sortTags(values.tags)
   }, [values.tags])
 
   const handleNewTagChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -40,36 +57,16 @@ const ArticleFormTags = () => {
     setFieldValue('tags', newTags)
   }
 
-  //TODO: separate hook
-  const handleKeyDown = (event: KeyboardEvent) => {
-    if (event.key === 'Enter') {
-      event.preventDefault()
-      if (newTag.trim() === '') return
-      if (values.tags === undefined) return
-      const newTags = [...values.tags]
-      newTags.push({ checked: true, label: newTag, uid: nanoid() })
-      setFieldValue('tags', newTags)
-      setNewTag('')
-    }
-  }
-
-  useEffect(() => {
-    window.addEventListener('keydown', handleKeyDown)
-    return () => {
-      window.removeEventListener('keydown', handleKeyDown)
-    }
-  }, [newTag])
-
   return (
-    <div className='flex flex-col w-[252px] gap-2'>
+    <div className='flex flex-col w-[252px]'>
       <FormInput
         label={strings.tags}
         value={newTag}
         onChange={handleNewTagChange}
         placeholder={strings.tagPlaceholder}
-        containerClassName='gap-2 mb-6'
+        containerClassName='mb-6'
       />
-      <div className='border rounded border-grey-2 px-4 pt-[17px] py-4 flex flex-col gap-3'>
+      <div className='flex flex-col gap-3 px-4 py-4 border rounded border-grey-2'>
         {sortedTags ? (
           sortedTags.map(tag => {
             if (tag === undefined) return

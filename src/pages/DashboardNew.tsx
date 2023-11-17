@@ -2,7 +2,7 @@ import ArticleForm from '../components/ArticleForm'
 import DashboardTitle from '../components/DashboardTitle'
 import { Formik } from 'formik'
 import { initialValues, validate } from '../components/ArticleFormValidation'
-import { CreateArticle } from '../services/article/article.thunks'
+import { CreateArticle } from '../store/article/article.thunks'
 import { ArticleCreationToast } from '../components/SuccessToast'
 import { useAppDispatch } from '../store/hooks'
 import { useNavigate } from 'react-router-dom'
@@ -23,7 +23,6 @@ const DashboardNew = () => {
         validate={validate}
         onSubmit={(values, { setSubmitting }) => {
           setSubmitting(true)
-          //TODO: add schema validation
           const checkedTags: string[] = []
           values.tags?.forEach(item => {
             if (item.checked === true) checkedTags.push(item.label)
@@ -32,12 +31,9 @@ const DashboardNew = () => {
             CreateArticle(
               { ...values, tagList: checkedTags },
               navigate,
-              ArticleCreationToast,
-              () => {
-                setSubmitting(false)
-              }
+              ArticleCreationToast
             )
-          )
+          ).finally(() => setSubmitting(false))
         }}
       >
         <ArticleForm />

@@ -18,7 +18,7 @@ const ArticleTableRowButton: React.FC<Props> = ({ onDelete, slug }) => {
     <Popover className='relative pt-3'>
       <Popover.Button className='flex w-16 h-10 text-white rounded outline-none bg-blue-2'>
         <div className='px-[10px] pt-2'>…</div>
-        <div className='w-[30px] flex items-center justify-center'>
+        <div className='w-[30px] flex items-center justify-center h-full'>
           <CaretIcon className='text-xs' />
         </div>
       </Popover.Button>

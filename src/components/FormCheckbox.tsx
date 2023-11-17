@@ -2,7 +2,11 @@ type Props = {
   label: string
   checked: boolean
   uid?: string
-  onChange: (tag: { label: string; checked: boolean; uid?: string }) => unknown
+  onChange: (input: {
+    label: string
+    checked: boolean
+    uid?: string
+  }) => unknown
 }
 
 const FormCheckbox: React.FC<Props> = ({ checked, label, onChange, uid }) => {

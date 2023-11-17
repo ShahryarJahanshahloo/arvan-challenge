@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom'
-import { Logout } from '../../services/user/user.thunks'
+import { Logout } from '../../store/user/user.thunks'
 import { useAppDispatch, useAppSelector } from '../../store/hooks'
-import { selectUsername } from '../../store/userSlice'
+import { selectUsername } from '../../store/user/userSlice'
 import MenuIcon from '../../components/MenuIcon'
 
 const strings = {

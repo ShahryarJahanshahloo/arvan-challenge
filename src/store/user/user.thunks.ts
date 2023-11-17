@@ -1,7 +1,11 @@
 import { NavigateFunction } from 'react-router-dom'
-import { AppThunk } from '../../store/store'
-import { removeUser, setUser } from '../../store/userSlice'
-import { apiGetUser, apiLogin, apiRegisterUser } from './user.api'
+import { AppThunk } from '../store'
+import { removeUser, setUser } from './userSlice'
+import {
+  apiGetUser,
+  apiLogin,
+  apiRegisterUser,
+} from '../../services/user/user.api'
 import { Toast } from '../toast/toast.thunks'
 
 export const Authenticate =

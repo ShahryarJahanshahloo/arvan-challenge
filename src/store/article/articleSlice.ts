@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
-import type { RootState } from './store'
-import type { ArticleType } from '../services/article/article.entities'
+import type { RootState } from '../store'
+import type { ArticleType } from '../../services/article/article.entities'
 
 interface ArticlesState {
   data?: ArticleType[]

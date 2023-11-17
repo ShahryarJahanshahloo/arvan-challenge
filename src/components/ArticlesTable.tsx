@@ -1,18 +1,19 @@
-import { useCallback, useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import {
   apiDeleteArticle,
   getUserArticles,
 } from '../services/article/article.api'
-import { setArticles, selectArticles } from '../store/articleSlice'
+import { setArticles, selectArticles } from '../store/article/articleSlice'
 import { useAppDispatch, useAppSelector } from '../store/hooks'
 import ArticlesTableRow from './ArticleTableRow'
 import ArticlesTablePagination from './ArticlesTablePagination'
 import { useSelector } from 'react-redux'
-import { selectUsername } from '../store/userSlice'
+import { selectUsername } from '../store/user/userSlice'
 import DeleteArticleModal from './DeleteArticleModal'
 import TableSkeleton from './TableSkeleton'
-import { Toast } from '../services/toast/toast.thunks'
+import { Toast } from '../store/toast/toast.thunks'
 import { ArticleDeletionToast } from './SuccessToast'
+import usePagination from '../hooks/usePagination'
 
 const ArticlesTable = () => {
   const dispatch = useAppDispatch()
@@ -20,26 +21,15 @@ const ArticlesTable = () => {
   const username = useSelector(selectUsername)
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [articleToDelete, setArticleToDelete] = useState<string>()
-  const [page, setPage] = useState(1)
-  const [totalPages, setTotalPages] = useState(1)
-
-  const offset = useMemo(() => {
-    return (page - 1) * 10
-  }, [page])
-
-  const nextPage = () => {
-    if (page === totalPages) return
-    setPage(page + 1)
-  }
-
-  const prevPage = () => {
-    if (page === 1) return
-    setPage(page - 1)
-  }
-
-  const selectPage = (newPage: number) => {
-    setPage(newPage)
-  }
+  const {
+    currentPage,
+    nextPage,
+    prevPage,
+    selectPage,
+    totalPages,
+    offset,
+    setTotalPages,
+  } = usePagination()
 
   useEffect(() => {
     if (!username) return
@@ -114,7 +104,7 @@ const ArticlesTable = () => {
       <div className='flex items-center justify-center w-full mt-14'>
         <ArticlesTablePagination
           total={totalPages}
-          active={page}
+          active={currentPage}
           next={nextPage}
           prev={prevPage}
           selectPage={selectPage}

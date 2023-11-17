@@ -1,10 +1,10 @@
 import { NavigateFunction } from 'react-router-dom'
-import { AppThunk } from '../../store/store'
+import { AppThunk } from '../store'
 import {
   apiCreateArticle,
   apiDeleteArticle,
   apiUpdateArticle,
-} from './article.api'
+} from '../../services/article/article.api'
 import { Toast } from '../toast/toast.thunks'
 
 export const CreateArticle =

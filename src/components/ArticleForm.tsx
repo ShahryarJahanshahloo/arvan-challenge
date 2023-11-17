@@ -1,8 +1,5 @@
 import FormSubmitButton from './FormSubmitButton'
 import FormInput from './FormInput'
-import { useEffect } from 'react'
-import { apiGetTags } from '../services/article/article.api'
-import { nanoid } from 'nanoid'
 import ArticleFormTags from './ArticleFormTags'
 import { useFormikContext } from 'formik'
 import { FormValues } from './ArticleFormValidation'
@@ -24,36 +21,9 @@ const ArticleForm = () => {
     handleChange,
     isValid,
     isSubmitting,
-    setFieldValue,
     touched,
     handleBlur,
   } = useFormikContext<FormValues>()
-
-  useEffect(() => {
-    const fetch = async () => {
-      const tags = await apiGetTags()
-      const normalizedTags = tags.map(tag => {
-        return {
-          label: tag,
-          checked: false,
-          uid: nanoid(),
-        }
-      })
-      if (values.tags === undefined) {
-        setFieldValue('tags', normalizedTags)
-      } else {
-        const newTags = [...values.tags]
-        normalizedTags.forEach(item => {
-          const found = newTags.find(tag => tag.label === item.label)
-          if (!found) {
-            newTags.push(item)
-          }
-        })
-        setFieldValue('tags', newTags)
-      }
-    }
-    fetch()
-  }, [])
 
   return (
     <form

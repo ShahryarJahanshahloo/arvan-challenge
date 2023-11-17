@@ -5,6 +5,8 @@ import TagSkeleton from './TagSkeleton'
 import { nanoid } from 'nanoid'
 import { useFormikContext } from 'formik'
 import { FormValues } from './ArticleFormValidation'
+import { apiGetTags } from '../services/article/article.api'
+import useKeyDown from '../hooks/useKeyDown'
 
 const strings = {
   tags: 'Tags',
@@ -14,6 +16,40 @@ const strings = {
 const ArticleFormTags = () => {
   const [newTag, setNewTag] = useState('')
   const { values, setFieldValue } = useFormikContext<FormValues>()
+  useKeyDown('Enter', () => {
+    if (newTag.trim() === '') return
+    if (values.tags === undefined) return
+    const newTags = [...values.tags]
+    newTags.push({ checked: true, label: newTag, uid: nanoid() })
+    setFieldValue('tags', newTags)
+    setNewTag('')
+  })
+
+  useEffect(() => {
+    const fetch = async () => {
+      const tags = await apiGetTags()
+      const normalizedTags = tags.map(tag => {
+        return {
+          label: tag,
+          checked: false,
+          uid: nanoid(),
+        }
+      })
+      if (values.tags === undefined) {
+        setFieldValue('tags', normalizedTags)
+      } else {
+        const newTags = [...values.tags]
+        normalizedTags.forEach(item => {
+          const found = newTags.find(tag => tag.label === item.label)
+          if (!found) {
+            newTags.push(item)
+          }
+        })
+        setFieldValue('tags', newTags)
+      }
+    }
+    fetch()
+  }, [])
 
   const sortedTags = useMemo(() => {
     return values.tags?.sort((a, b) => {
@@ -39,26 +75,6 @@ const ArticleFormTags = () => {
     })
     setFieldValue('tags', newTags)
   }
-
-  //TODO: separate hook
-  const handleKeyDown = (event: KeyboardEvent) => {
-    if (event.key === 'Enter') {
-      event.preventDefault()
-      if (newTag.trim() === '') return
-      if (values.tags === undefined) return
-      const newTags = [...values.tags]
-      newTags.push({ checked: true, label: newTag, uid: nanoid() })
-      setFieldValue('tags', newTags)
-      setNewTag('')
-    }
-  }
-
-  useEffect(() => {
-    window.addEventListener('keydown', handleKeyDown)
-    return () => {
-      window.removeEventListener('keydown', handleKeyDown)
-    }
-  }, [newTag])
 
   return (
     <div className='flex flex-col w-[252px]'>

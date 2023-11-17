@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom'
 import FormSubmitButton from '../components/FormSubmitButton'
 import FormInput from '../components/FormInput'
 import { initialValues, validate } from './RegisterFormValidation'
-import { Register } from '../services/user/user.thunks'
+import { Register } from '../store/user/user.thunks'
 
 const strings = {
   submit: 'Register',

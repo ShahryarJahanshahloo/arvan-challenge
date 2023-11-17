@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom'
 import FormSubmitButton from '../components/FormSubmitButton'
 import FormInput from '../components/FormInput'
 import { initialValues, validate } from './LoginFormValidation'
-import { Login } from '../services/user/user.thunks'
+import { Login } from '../store/user/user.thunks'
 import { LoginErrorToast } from './ErrorToast'
 
 const strings = {

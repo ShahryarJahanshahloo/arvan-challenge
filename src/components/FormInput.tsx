@@ -48,6 +48,7 @@ const FormInput: React.FC<Props> = ({
     <div className={`${containerClassName} flex flex-col`}>
       <label
         className={`${labelClassName} mb-2 ${error && touched && 'text-red-1'}`}
+        htmlFor={id}
       >
         {label}
       </label>

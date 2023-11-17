@@ -23,7 +23,6 @@ const DashboardNew = () => {
         validate={validate}
         onSubmit={(values, { setSubmitting }) => {
           setSubmitting(true)
-          //TODO: add schema validation
           const checkedTags: string[] = []
           values.tags?.forEach(item => {
             if (item.checked === true) checkedTags.push(item.label)
@@ -32,12 +31,9 @@ const DashboardNew = () => {
             CreateArticle(
               { ...values, tagList: checkedTags },
               navigate,
-              ArticleCreationToast,
-              () => {
-                setSubmitting(false)
-              }
+              ArticleCreationToast
             )
-          )
+          ).finally(() => setSubmitting(false))
         }}
       >
         <ArticleForm />

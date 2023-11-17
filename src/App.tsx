@@ -56,6 +56,14 @@ function App() {
             }
           />
           <Route
+            path='articles/page/:slug'
+            element={
+              <Suspense>
+                <DashboardAll />
+              </Suspense>
+            }
+          />
+          <Route
             path='articles/edit/:slug'
             element={
               <Suspense>

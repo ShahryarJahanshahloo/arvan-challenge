@@ -21,11 +21,8 @@ const LoginForm = () => {
     validate: validate,
     onSubmit: (values, { setSubmitting }) => {
       setSubmitting(true)
-      //TODO: add schema validation
-      dispatch(
-        Login(values, navigate, LoginErrorToast, () => {
-          setSubmitting(false)
-        })
+      dispatch(Login(values, navigate, LoginErrorToast)).finally(() =>
+        setSubmitting(false)
       )
     },
   })

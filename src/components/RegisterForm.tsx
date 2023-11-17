@@ -21,12 +21,7 @@ const RegisterForm = () => {
     validate: validate,
     onSubmit: (values, { setSubmitting }) => {
       setSubmitting(true)
-      //TODO: add schema validation
-      dispatch(
-        Register(values, navigate, () => {
-          setSubmitting(false)
-        })
-      )
+      dispatch(Register(values, navigate)).finally(() => setSubmitting(false))
     },
   })
 

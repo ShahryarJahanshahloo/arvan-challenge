@@ -1,9 +1,14 @@
 import { useCallback, useEffect, useState } from 'react'
 import {
   apiDeleteArticle,
-  getUserArticles,
+  apiGetUserArticles,
 } from '../services/article/article.api'
-import { setArticles, selectArticles } from '../store/article/articleSlice'
+import {
+  setArticles,
+  selectArticles,
+  setLoading,
+  selectArticlesLoading,
+} from '../store/article/articleSlice'
 import { useAppDispatch, useAppSelector } from '../store/hooks'
 import ArticlesTableRow from './ArticleTableRow'
 import ArticlesTablePagination from './ArticlesTablePagination'
@@ -14,10 +19,17 @@ import TableSkeleton from './TableSkeleton'
 import { Toast } from '../store/toast/toast.thunks'
 import { ArticleDeletionToast } from './SuccessToast'
 import usePagination from '../hooks/usePagination'
+import { useNavigate } from 'react-router-dom'
 
-const ArticlesTable = () => {
+type Props = {
+  initialPage: number
+}
+
+const ArticlesTable: React.FC<Props> = ({ initialPage }) => {
+  const navigate = useNavigate()
   const dispatch = useAppDispatch()
   const articles = useAppSelector(selectArticles)
+  const articlesLoading = useAppSelector(selectArticlesLoading)
   const username = useSelector(selectUsername)
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [articleToDelete, setArticleToDelete] = useState<string>()
@@ -29,20 +41,34 @@ const ArticlesTable = () => {
     totalPages,
     offset,
     setTotalPages,
-  } = usePagination()
+  } = usePagination(initialPage)
 
   useEffect(() => {
     if (!username) return
-    getUserArticles(username, 10, offset).then(res => {
-      setTotalPages(Math.ceil(res.articlesCount / 10))
-      dispatch(setArticles(res.articles))
-    })
+    dispatch(setLoading(true))
+    apiGetUserArticles(username, 10, offset)
+      .then(res => {
+        setTotalPages(Math.ceil(res.articlesCount / 10))
+        dispatch(setArticles(res.articles))
+      })
+      .catch(() => {})
+      .finally(() => dispatch(setLoading(false)))
   }, [username, offset])
 
   const handleArticleOnDelete = useCallback((slug: string) => {
     setArticleToDelete(slug)
     setIsModalOpen(true)
   }, [])
+
+  useEffect(() => {
+    if (currentPage === 1)
+      return window.history.replaceState(null, 'New Page Title', '/articles')
+    window.history.replaceState(
+      null,
+      'New Page Title',
+      '/articles/page/' + currentPage
+    )
+  }, [currentPage])
 
   return (
     <div className='py-[30px]'>
@@ -56,7 +82,7 @@ const ArticlesTable = () => {
             <th className='hidden text-start md:table-cell'>Excerpt</th>
             <th className='pr-7 text-end'>Created</th>
           </tr>
-          {articles
+          {articles && articlesLoading === false
             ? articles.map((item, index) => {
                 return (
                   <ArticlesTableRow
@@ -89,14 +115,18 @@ const ArticlesTable = () => {
         }}
         onSuccess={() => {
           if (articleToDelete === undefined) return
-          apiDeleteArticle(articleToDelete).then(() => {
-            if (username)
-              getUserArticles(username, 10, offset).then(res => {
-                setTotalPages(Math.ceil(res.articlesCount / 10))
-                dispatch(setArticles(res.articles))
-              })
-            dispatch(Toast(ArticleDeletionToast, 'top-20 right-[30px]'))
-          })
+          apiDeleteArticle(articleToDelete)
+            .then(() => {
+              if (username === undefined) return
+              return apiGetUserArticles(username, 10, offset)
+            })
+            .then(res => {
+              if (res === undefined) return
+              setTotalPages(Math.ceil(res.articlesCount / 10))
+              dispatch(setArticles(res.articles))
+              dispatch(Toast(ArticleDeletionToast, 'top-20 right-[30px]'))
+            })
+            .catch(() => {})
           setIsModalOpen(false)
         }}
       />

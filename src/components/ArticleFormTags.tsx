@@ -5,8 +5,10 @@ import TagSkeleton from './TagSkeleton'
 import { nanoid } from 'nanoid'
 import { useFormikContext } from 'formik'
 import { FormValues } from './ArticleFormValidation'
-import { apiGetTags } from '../services/article/article.api'
 import useKeyDown from '../hooks/useKeyDown'
+import { useAppDispatch } from '../store/hooks'
+import { MergeTags } from '../store/article/article.thunks'
+import { sortTags } from '../helpers/tags'
 
 const strings = {
   tags: 'Tags',
@@ -14,6 +16,7 @@ const strings = {
 }
 
 const ArticleFormTags = () => {
+  const dispatch = useAppDispatch()
   const [newTag, setNewTag] = useState('')
   const { values, setFieldValue } = useFormikContext<FormValues>()
   useKeyDown('Enter', () => {
@@ -26,37 +29,15 @@ const ArticleFormTags = () => {
   })
 
   useEffect(() => {
-    const fetch = async () => {
-      const tags = await apiGetTags()
-      const normalizedTags = tags.map(tag => {
-        return {
-          label: tag,
-          checked: false,
-          uid: nanoid(),
-        }
-      })
-      if (values.tags === undefined) {
-        setFieldValue('tags', normalizedTags)
-      } else {
-        const newTags = [...values.tags]
-        normalizedTags.forEach(item => {
-          const found = newTags.find(tag => tag.label === item.label)
-          if (!found) {
-            newTags.push(item)
-          }
-        })
+    dispatch(MergeTags(values.tags))
+      .then(newTags => {
         setFieldValue('tags', newTags)
-      }
-    }
-    fetch()
+      })
+      .catch(() => {})
   }, [])
 
   const sortedTags = useMemo(() => {
-    return values.tags?.sort((a, b) => {
-      const textA = a.label.toUpperCase()
-      const textB = b.label.toUpperCase()
-      return textA < textB ? -1 : textA > textB ? 1 : 0
-    })
+    return sortTags(values.tags)
   }, [values.tags])
 
   const handleNewTagChange = (e: React.ChangeEvent<HTMLInputElement>) => {

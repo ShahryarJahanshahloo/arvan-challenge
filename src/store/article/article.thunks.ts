@@ -3,9 +3,11 @@ import { AppThunk } from '../store'
 import {
   apiCreateArticle,
   apiDeleteArticle,
+  apiGetTags,
   apiUpdateArticle,
 } from '../../services/article/article.api'
 import { Toast } from '../toast/toast.thunks'
+import { nanoid } from 'nanoid'
 
 export const CreateArticle =
   (
@@ -16,18 +18,16 @@ export const CreateArticle =
       tagList?: string[]
     },
     navigate: NavigateFunction,
-    toastComp: React.ReactElement,
-    cb?: () => void
-  ): AppThunk =>
+    toastComp: React.ReactElement
+  ): AppThunk<Promise<void>> =>
   async dispatch => {
     try {
-      const res = await apiCreateArticle(body)
+      await apiCreateArticle(body)
       navigate('/articles')
       dispatch(Toast(toastComp, 'top-20 right-[30px]'))
     } catch (error) {
       console.log(error)
     }
-    if (cb) cb()
   }
 
 export const UpdateArticle =
@@ -40,34 +40,60 @@ export const UpdateArticle =
       tagList?: string[]
     },
     navigate: NavigateFunction,
-    toastComp: React.ReactElement,
-    cb?: () => void
-  ): AppThunk =>
+    toastComp: React.ReactElement
+  ): AppThunk<Promise<void>> =>
   async dispatch => {
     try {
-      const res = await apiUpdateArticle(slug, body)
+      await apiUpdateArticle(slug, body)
       navigate('/articles')
       dispatch(Toast(toastComp, 'top-20 right-[30px]'))
     } catch (error) {
       console.log(error)
     }
-    if (cb) cb()
   }
 
 export const DeleteArticle =
   (
     slug: string,
     navigate: NavigateFunction,
-    toastComp: React.ReactElement,
-    cb?: () => void
+    toastComp: React.ReactElement
   ): AppThunk =>
   async dispatch => {
     try {
-      const res = await apiDeleteArticle(slug)
+      await apiDeleteArticle(slug)
       navigate('/articles')
       dispatch(Toast(toastComp, 'top-20 right-[30px]'))
     } catch (error) {
       console.log(error)
     }
-    if (cb) cb()
+  }
+
+export const MergeTags =
+  (
+    prevTags?: { label: string; uid: string; checked: boolean }[]
+  ): AppThunk<
+    Promise<{ label: string; uid: string; checked: boolean }[] | undefined>
+  > =>
+  async () => {
+    try {
+      const tags = await apiGetTags()
+      const normalizedTags = tags.map(tag => {
+        return {
+          label: tag,
+          checked: false,
+          uid: nanoid(),
+        }
+      })
+      if (prevTags === undefined) return normalizedTags
+      const newTags = [...prevTags]
+      normalizedTags.forEach(item => {
+        const found = newTags.find(tag => tag.label === item.label)
+        if (!found) {
+          newTags.push(item)
+        }
+      })
+      return newTags
+    } catch (error) {
+      console.log(error)
+    }
   }

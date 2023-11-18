@@ -1,11 +1,11 @@
 type Props = {
   label: string
   onChange: ((args: unknown) => unknown) | ((e: React.ChangeEvent<any>) => void)
-  value: any
+  value?: string | number | readonly string[]
   id?: string
   type?: string
   error?: string
-  autcomplete?: string
+  autocomplete?: string
   placeholder?: string
   textarea?: boolean
   resize?: 'none' | 'vertical' | 'horizontal' | 'both'
@@ -31,7 +31,7 @@ const FormInput: React.FC<Props> = ({
   type = 'text',
   value,
   error,
-  autcomplete,
+  autocomplete,
   placeholder,
   textarea = false,
   resize = 'none',
@@ -72,7 +72,7 @@ const FormInput: React.FC<Props> = ({
           }`}
           onChange={onChange}
           value={value}
-          autoComplete={autcomplete}
+          autoComplete={autocomplete}
           placeholder={placeholder}
           onBlur={onBlur}
         />

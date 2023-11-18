@@ -1,8 +1,8 @@
 import { useMemo, useState } from 'react'
 
-const usePagination = (initialPage: number) => {
+const usePagination = (initialPage: number, initialTotalPages?: number) => {
   const [page, setPage] = useState(initialPage)
-  const [totalPages, setTotalPages] = useState(initialPage)
+  const [totalPages, setTotalPages] = useState(initialTotalPages || initialPage)
 
   const offset = useMemo(() => {
     return (page - 1) * 10
@@ -10,12 +10,12 @@ const usePagination = (initialPage: number) => {
 
   const nextPage = () => {
     if (page === totalPages) return
-    setPage(page + 1)
+    setPage(page => page + 1)
   }
 
   const prevPage = () => {
     if (page === 1) return
-    setPage(page - 1)
+    setPage(page => page - 1)
   }
 
   const selectPage = (newPage: number) => {

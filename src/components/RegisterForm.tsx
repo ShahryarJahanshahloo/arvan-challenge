@@ -59,7 +59,7 @@ const RegisterForm = () => {
         value={formik.values.password}
         onChange={formik.handleChange}
         error={formik.errors.password}
-        autcomplete='new-password'
+        autocomplete='new-password'
         onBlur={formik.handleBlur}
         touched={formik.touched.password}
         containerClassName='mb-7'
